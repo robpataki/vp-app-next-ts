@@ -1,0 +1,12 @@
+.cardGrid {
+  display: flex;
+
+}
+
+.card {
+  border: 2px solid red;
+}
+
+.cardImage {
+
+}
