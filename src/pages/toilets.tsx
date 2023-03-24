@@ -1,40 +1,20 @@
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { dehydrate, QueryClient, useQuery } from 'react-query';
+import { fetchProducts } from '@/api/service';
 import styles from '@/styles/Toilets.module.css';
 
-import axios from 'axios';
-
-const API_URL =
-  'https://spanishinquisition.victorianplumbing.co.uk/interviews/listings?apikey=yj2bV48J40KsBpIMLvrZZ1j1KwxN4u3A83H8IBvI&';
 const BASE_URL = 'https://www.victorianplumbing.co.uk';
+const QUERY_KEY = 'toilet-data;';
+
+const getProducts = () => {
+  return fetchProducts().then((response) => response.products);
+};
 
 export default function Toilets() {
-  const [products, setProducts] = useState<any[]>([]);
-
-  useEffect(() => {
-    axios
-      .post(
-        API_URL,
-        {
-          query: 'toilets',
-          pageNumber: 0,
-          size: 0,
-          additionalPages: 0,
-          sort: 1,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      )
-      .then(function (response) {
-        setProducts(response.data.products);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
+  const { data: products, isLoading } = useQuery([QUERY_KEY], getProducts, {
+    enabled: true,
+  });
 
   return (
     <>
@@ -46,18 +26,21 @@ export default function Toilets() {
       </Head>
       <main className={styles.main}>
         <div className={styles.description}>
+          {isLoading && <span>Loading...</span>}
           {products && (
             <ul className={styles.cardGrid}>
-              {products.map((product, index) => {
+              {products.map((product: any, index: number) => {
                 const { image } = product;
                 const cardKey = `card-${index}`;
                 return (
                   <li className={styles.card} key={cardKey}>
                     <a href={`${BASE_URL}/${product.slug}`}>
-                      <div>
+                      {/* <div>
                         {product.productName}, {index}
-                      </div>
-                      <img
+                      </div> */}
+                      <Image
+                        width={400}
+                        height={400}
                         src={image.url}
                         className={styles.cardImage}
                         alt={image.attributes.imageAltText}
@@ -72,4 +55,13 @@ export default function Toilets() {
       </main>
     </>
   );
+}
+
+export async function getStaticProps() {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(QUERY_KEY, getProducts);
+
+  return {
+    props: { dehydratedState: dehydrate(queryClient) },
+  };
 }
