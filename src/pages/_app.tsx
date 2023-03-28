@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import type { AppProps } from 'next/app';
-import '@/styles/globals.css';
+import '@/styles/main.scss';
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 
 export default function App({ Component, pageProps }: AppProps) {

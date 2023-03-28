@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
-
 import { fetchProducts } from '@/api/service';
+
 import { useCardGame } from '@/hooks/useCardGame';
 import { Card } from '@/components/Card/Card';
 
-const BASE_URL = 'https://www.victorianplumbing.co.uk';
 const QUERY_KEY = 'toilet-data;';
 
 const getProducts = () => {
@@ -23,7 +22,6 @@ export default function Toilets() {
     return {
       imageURL: image.url,
       imageAltText: image.attributes.imageAltText,
-      url: `${BASE_URL}/${slug}`,
       index,
     };
   });
@@ -75,17 +73,17 @@ export default function Toilets() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="">
+      <main>
         Found matches: {foundMatches} / {totalMatches}
-        <div className="cardGame">
+        <div className="card-game">
           {isLoading && <span>Loading...</span>}
           {shuffledCards && (
-            <ul className="cardGrid">
+            <ul className="card-grid">
               {shuffledCards.map((card: any, index: number) => {
                 const { imageURL, imageAltText } = card;
                 const cardKey = `card-${index}`;
                 return (
-                  <li className="cardGridItem" key={cardKey}>
+                  <li className="card-grid__item" key={cardKey}>
                     <Card
                       {...{ index, imageURL, imageAltText }}
                       flipped={flippedCards.includes(index)}

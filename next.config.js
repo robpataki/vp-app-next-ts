@@ -5,6 +5,7 @@ const nextConfig = {
   images: {
     domains: ['images-nonprod.victorianplumbing.co.uk'],
   },
+  transpilePackages: [],
 };
 
 module.exports = nextConfig;
