@@ -1,2 +1,6 @@
+// Import Cardon styling
 @use '@carbon/react';
+
+// Import custom component styles
 @use '@/components/Card/Card.style';
+@use '@/components/ProductTile/ProductTile.style';

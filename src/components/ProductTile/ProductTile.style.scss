@@ -1,0 +1,19 @@
+.product-tile {
+  background: blue;
+
+  &-list {
+    background: yellow;
+
+    &__item {
+      background: green;
+    }
+  }
+
+  &__image {
+    background: red;
+  }
+
+  &__link {
+    background: black;
+  }
+}

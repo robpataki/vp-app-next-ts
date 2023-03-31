@@ -1,24 +1,39 @@
-import { useEffect, useState } from 'react';
 import Head from 'next/head';
+import { useState, useEffect } from 'react';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 
+// TODO:Rob - Figure out why TypeScript can't see the component definition
+import { Pagination } from '@carbon/react';
+
 import { fetchProducts } from '@/api/service';
-import { useCardGame } from '@/hooks/useCardGame';
-import { Card } from '@/components/Card/Card';
+import { ProductTile } from '@/components/ProductTile/ProductTile';
+import { BASE_URL, QUERY_KEY } from '@/constants/global.constants';
 
-const BASE_URL = 'https://www.victorianplumbing.co.uk';
-const QUERY_KEY = 'toilet-data;';
+const DEFAULT_PAGE_NUMBER = 1;
+const DEFAULT_PAGE_SIZE = 25;
 
-const getProducts = () => {
-  return fetchProducts({ size: 4 }).then((response) => response.products);
+const getProducts = ({ pageNumber = DEFAULT_PAGE_NUMBER }) => {
+  return fetchProducts({
+    size: DEFAULT_PAGE_SIZE,
+    pageNumber,
+  }).then((response) => response);
 };
 
 export default function Toilets() {
-  const { data: products, isLoading } = useQuery([QUERY_KEY], getProducts, {
+  const [pageNumber, setPageNumber] = useState<number>(DEFAULT_PAGE_NUMBER);
+  const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
+
+  useEffect(() => {
+    console.log('setPageNumber: ', pageNumber);
+  }, [pageNumber]);
+
+  const { data, isLoading } = useQuery([QUERY_KEY], getProducts, {
     enabled: true,
+    pageNumber,
+    pageSize,
   });
 
-  const cards = products.map((product, index: number) => {
+  const productCards = data.products.map((product: any, index: number) => {
     const { image, slug } = product;
     return {
       imageURL: image.url,
@@ -27,81 +42,54 @@ export default function Toilets() {
       index,
     };
   });
-  const { shuffleCards } = useCardGame();
-  const [shuffledCards, setShuffledCards] = useState<any[]>([]);
-  const [matchedCards, setMatchedCards] = useState<number[]>([]);
-  const [flippedCards, setFlippedCards] = useState<number[]>([]);
-  const [foundMatches, setFoundMatches] = useState<number>(0);
-  const totalMatches = shuffledCards.length / 2;
-
-  const flipCard = (index: number) => {
-    setFlippedCards([...flippedCards, index]);
-  };
-
-  useEffect(() => {
-    setShuffledCards(shuffleCards([...cards, ...cards]));
-  }, []);
-
-  useEffect(() => {
-    console.log(matchedCards);
-  }, [matchedCards]);
-
-  useEffect(() => {
-    if (flippedCards.length > 2) {
-      setFlippedCards(
-        flippedCards.slice(flippedCards.length - 1, flippedCards.length),
-      );
-    }
-
-    if (flippedCards.length === 2) {
-      if (
-        shuffledCards[flippedCards[0]].index ===
-        shuffledCards[flippedCards[1]].index
-      ) {
-        setFoundMatches(matchedCards.length / 2 + 1);
-        setTimeout(() => {
-          setMatchedCards([...matchedCards, flippedCards[0], flippedCards[1]]);
-          setFlippedCards([]);
-        }, 700);
-      }
-    }
-  }, [flippedCards, shuffledCards]);
 
   return (
     <>
       <Head>
-        <title>Memory game</title>
+        <title>Products</title>
         <meta name="description" content="Toilets, who doesn't like toilets?" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="">
-        Found matches: {foundMatches} / {totalMatches}
-        <div className="cardGame">
+
+      <main>
+        <>
           {isLoading && <span>Loading...</span>}
-          {shuffledCards && (
-            <ul className="cardGrid">
-              {shuffledCards.map((card: any, index: number) => {
-                const { imageURL, imageAltText } = card;
-                const cardKey = `card-${index}`;
+
+          <Pagination
+            backwardText="Previous page"
+            forwardText="Next page"
+            itemsPerPageText="Items per page:"
+            onChange={function noRefCheck(a: any) {
+              setPageNumber(a.page);
+              setPageSize(a.pageSize);
+              console.log(a);
+            }}
+            page={pageNumber}
+            pageSize={DEFAULT_PAGE_SIZE}
+            pageSizes={[
+              DEFAULT_PAGE_SIZE,
+              DEFAULT_PAGE_SIZE * 2,
+              DEFAULT_PAGE_SIZE * 5,
+            ]}
+            size="lg"
+            totalItems={data.pagination.total}
+          />
+
+          {productCards && (
+            <ul className="product-tile-list">
+              {productCards.map((card: any, index: number) => {
+                const { imageURL, imageAltText, url } = card;
+                const tileKey = `product-tile-${index}`;
                 return (
-                  <li className="cardGridItem" key={cardKey}>
-                    <Card
-                      {...{ index, imageURL, imageAltText }}
-                      flipped={flippedCards.includes(index)}
-                      matched={matchedCards.includes(index)}
-                      onClick={() => {
-                        if (!flippedCards.includes(index)) {
-                          flipCard(index);
-                        }
-                      }}
-                    />
+                  <li className="product-tile-list__item" key={tileKey}>
+                    <ProductTile {...{ imageURL, imageAltText, url }} />
                   </li>
                 );
               })}
             </ul>
           )}
-        </div>
+        </>
       </main>
     </>
   );

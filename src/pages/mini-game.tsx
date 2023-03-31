@@ -6,7 +6,7 @@ import { fetchProducts } from '@/api/service';
 import { useCardGame } from '@/hooks/useCardGame';
 import { Card } from '@/components/Card/Card';
 
-const QUERY_KEY = 'toilet-data;';
+import { QUERY_KEY } from '@/constants/global.constants';
 
 const getProducts = () => {
   return fetchProducts({ size: 4 }).then((response) => response.products);
@@ -18,7 +18,7 @@ export default function Toilets() {
   });
 
   const cards = products.map((product, index: number) => {
-    const { image, slug } = product;
+    const { image } = product;
     return {
       imageURL: image.url,
       imageAltText: image.attributes.imageAltText,
@@ -68,8 +68,8 @@ export default function Toilets() {
   return (
     <>
       <Head>
-        <title>Memory game</title>
-        <meta name="description" content="Toilets, who doesn't like toilets?" />
+        <title>Mini game</title>
+        <meta name="description" content="Card memory mini-game" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

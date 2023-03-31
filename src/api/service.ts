@@ -1,11 +1,17 @@
 import apiClient from '@/api/client';
 
-export const fetchProducts = async (options: { size?: number }) => {
-  const { size = 10 } = options;
+type TFetchOptions = {
+  query?: string;
+  size?: number;
+  pageNumber?: number;
+};
+
+export const fetchProducts = async (options: TFetchOptions) => {
+  const { size = 10, pageNumber = 1, query = 'toilets' } = options;
 
   const response = await apiClient.post('', {
-    query: 'toilets',
-    pageNumber: 1,
+    query,
+    pageNumber,
     size,
     additionalPages: 0,
     sort: 1,
