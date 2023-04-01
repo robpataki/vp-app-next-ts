@@ -1,15 +1,12 @@
 import apiClient from '@/api/client';
-
-type TFetchOptions = {
-  query?: string;
-  size?: number;
-  pageNumber?: number;
-};
+import type { TFetchOptions, TAPIResponse } from './service.types';
 
 export const fetchProducts = async (options: TFetchOptions) => {
   const { size = 10, pageNumber = 1, query = 'toilets' } = options;
 
-  const response = await apiClient.post('', {
+  console.log('fetchProducts() - ', size, pageNumber, query);
+
+  const response = await apiClient.post<TAPIResponse>('', {
     query,
     pageNumber,
     size,
@@ -17,5 +14,7 @@ export const fetchProducts = async (options: TFetchOptions) => {
     sort: 1,
   });
 
-  return response.data;
+  const { data } = response;
+  console.log('fetchProducts(): ', data);
+  return data;
 };
