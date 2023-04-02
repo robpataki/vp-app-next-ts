@@ -4,8 +4,6 @@ import type { TFetchOptions, TAPIResponse } from './service.types';
 export const fetchProducts = async (options: TFetchOptions) => {
   const { size = 10, pageNumber = 1, query = 'toilets' } = options;
 
-  console.log('fetchProducts() - ', size, pageNumber, query);
-
   const response = await apiClient.post<TAPIResponse>('', {
     query,
     pageNumber,
@@ -15,6 +13,5 @@ export const fetchProducts = async (options: TFetchOptions) => {
   });
 
   const { data } = response;
-  console.log('fetchProducts(): ', data);
   return data;
 };

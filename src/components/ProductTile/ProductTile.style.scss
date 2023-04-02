@@ -1,19 +1,62 @@
 .product-tile {
-  background: blue;
+  --font-colour: rgb(0, 0, 0);
+
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  color: var(--font-color);
 
   &-list {
-    background: yellow;
+    --list-bg-colour: #f4f4f4;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: var(--list-bg-colour);
 
     &__item {
-      background: green;
+      position: relative;
+      padding: 1rem 1rem 2rem;
+      flex: 1 1 25%;
+
+      transition: background-color 0.2s ease-out;
+
+      &:hover,
+      &:focus-within {
+        background-color: rgb(255, 255, 255, 80%);
+      }
     }
   }
 
   &__image {
-    background: red;
+    width: 100%;
+    height: auto;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 0 0 1px rgb(0, 0, 0, 20%);
   }
 
-  &__link {
-    background: black;
+  &__details {
+    flex: 1;
+  }
+
+  &__name {
+    font-size: 1.2rem;
+    line-height: 1.4;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  &__price {
+    display: block;
+    font-size: 0.9rem;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  &__button {
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      inset: 0;
+    }
   }
 }

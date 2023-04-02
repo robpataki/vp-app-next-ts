@@ -4,3 +4,39 @@
 // Import custom component styles
 @use '@/components/Card/Card.style';
 @use '@/components/ProductTile/ProductTile.style';
+
+.product-page {
+  background-color: rgb(50, 170, 60);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.product-listing {
+  max-width: 75rem;
+  background: white;
+  padding: 1rem 2rem;
+  margin: 0 auto;
+  position: relative;
+}
+
+.product-pagination {
+  padding: 2rem 0;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  -webkit-clip-path: inset(50%) !important;
+  clip-path: inset(50%) !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
