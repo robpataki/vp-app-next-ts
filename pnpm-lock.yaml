@@ -4,6 +4,7 @@ specifiers:
   '@carbon/react': 1.25.0
   '@commitlint/cli': 17.4.4
   '@commitlint/config-conventional': 17.4.4
+  '@types/carbon-components-react': 7.55.2
   '@types/node': 18.15.3
   '@types/react': 18.0.28
   '@types/react-dom': 18.0.11
@@ -35,6 +36,7 @@ dependencies:
 devDependencies:
   '@commitlint/cli': 17.4.4
   '@commitlint/config-conventional': 17.4.4
+  '@types/carbon-components-react': 7.55.2
   '@types/node': 18.15.3
   '@types/react': 18.0.28
   '@types/react-dom': 18.0.11
@@ -637,6 +639,13 @@ packages:
 
   /@tsconfig/node16/1.0.3:
     resolution: {integrity: sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==}
+    dev: true
+
+  /@types/carbon-components-react/7.55.2:
+    resolution: {integrity: sha512-4ikLLTykxeGYlvTRjnSbLNTLhlVaRyPhTnBlHFeRKMFHuGQB4N9qdG8xWMqaC+d+3ewSjQnOwYzzwJaLTLCfug==}
+    dependencies:
+      '@types/react': 18.0.28
+      flatpickr: 4.6.9
     dev: true
 
   /@types/json-schema/7.0.11:
@@ -1934,7 +1943,6 @@ packages:
 
   /flatpickr/4.6.9:
     resolution: {integrity: sha512-F0azNNi8foVWKSF+8X+ZJzz8r9sE1G4hl06RyceIaLvyltKvDl6vqk9Lm/6AUUCi5HWaIjiUbk7UpeE/fOXOpw==}
-    dev: false
 
   /flatted/3.2.6:
     resolution: {integrity: sha512-0sQoMh9s0BYsm+12Huy/rkKxVu4R1+r96YX5cG44rHV0pQ6iC3Q+mkoMFaGWObMFYQxCVT+ssG1ksneA2MI9KQ==}
