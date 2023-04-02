@@ -1,9 +1,16 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
-import { dehydrate, QueryClient, useQuery } from 'react-query';
+import {
+  dehydrate,
+  QueryClient,
+  useQuery,
+  QueryFunctionContext,
+} from 'react-query';
 
-// TODO:Rob - Figure out why TypeScript can't see the component definition
-import { Pagination, Heading, InlineLoading } from '@carbon/react';
+// TODO:Rob - Figure out why TS cannot find modules in @carbon-react
+import { Pagination, InlineLoading, Heading } from '@carbon/react';
+/* import { Pagination, InlineLoading } from 'carbon-components-react';
+import { Heading } from 'carbon-components-react/lib/components/Heading'; */
 
 import { fetchProducts } from '@/api/service';
 import type { TProduct, TPagination } from '@/api/service.types';
@@ -15,9 +22,12 @@ import {
   DEFAULT_PAGE_SIZE,
 } from '@/constants/global.constants';
 
-// TODO:Rob - Type queryKey up properly
-const getProducts = ({ queryKey }) => {
-  const [_, { pageSize, pageNumber }] = queryKey;
+const getProducts = ({
+  queryKey,
+}: QueryFunctionContext<
+  [string, { pageSize: number; pageNumber: number }]
+>) => {
+  const [, { pageSize, pageNumber }] = queryKey;
   return fetchProducts({
     size: pageSize,
     pageNumber,

@@ -17,7 +17,7 @@ export default function Toilets() {
     enabled: true,
   });
 
-  const cards = products.map((product, index: number) => {
+  const cards = products?.map((product, index: number) => {
     const { image } = product;
     return {
       imageURL: image.url,
@@ -25,6 +25,7 @@ export default function Toilets() {
       index,
     };
   });
+
   const { shuffleCards } = useCardGame();
   const [shuffledCards, setShuffledCards] = useState<any[]>([]);
   const [matchedCards, setMatchedCards] = useState<number[]>([]);
@@ -37,8 +38,10 @@ export default function Toilets() {
   };
 
   useEffect(() => {
-    setShuffledCards(shuffleCards([...cards, ...cards]));
-  }, []);
+    if (cards) {
+      setShuffledCards(shuffleCards([...cards, ...cards]));
+    }
+  }, [cards, shuffleCards]);
 
   useEffect(() => {
     console.log(matchedCards);

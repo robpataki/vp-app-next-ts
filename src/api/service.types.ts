@@ -24,8 +24,6 @@ export type TProduct = {
 };
 
 export type TAPIResponse = {
-  data: {
-    pagination: TPagination;
-    products: Array<TProduct>;
-  };
+  pagination: TPagination;
+  products: Array<TProduct>;
 };
